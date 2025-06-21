@@ -88,9 +88,7 @@ Promise.all([
   // Helper function to group and re-use function calls
   // associated with showing the settings window.
   const showSettings = () => {
-    menu.hide();
-    settingsButton.hide();
-    window.menuAPI.cancelSelection();
+    menu.cancel();
     window.menuAPI.showSettings();
   };
 
@@ -112,6 +110,11 @@ Promise.all([
   window.menuAPI.onShowMenu((root, menuOptions) => {
     menu.show(root, menuOptions);
     settingsButton.show();
+  });
+
+  // Hide the menu when the main process requests it.
+  window.menuAPI.onHideMenu(() => {
+    menu.cancel();
   });
 
   // Tell the menu about settings changes. This could check more detailed which setting
